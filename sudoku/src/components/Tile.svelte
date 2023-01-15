@@ -1,21 +1,33 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
+
   export let value;
+  const dispatch = createEventDispatcher();
+  const handledKeys = {
+    ArrowRight: 1,
+    ArrowLeft: -1,
+    ArrowDown: 9,
+    ArrowUp: -9,
+  };
 </script>
 
 <input
+  class="tile"
   bind:value
   type="text"
   min="1"
   max="9"
   maxlength={1}
-  on:keyup={(e) => {
+  on:keydown={(e) => {
     e.preventDefault();
-    if (!isNaN(e.target.value)) {
-      value = e.target.value;
-    } else {
+    if (!isNaN(e.key) && e.key != "0") {
+      value = e.key;
+    } else if (e.key == "Backspace") {
       value = "";
+    } else if (handledKeys[e.code] != undefined) {
+      console.log("Arrows");
+      dispatch("arrow", { focusShift: handledKeys[e.code] });
     }
-    console.log();
   }}
 />
 
@@ -32,5 +44,12 @@
     color: blueviolet;
     font-size: 2rem;
     text-align: center;
+    caret-color: transparent;
+    transition: all 0.3s;
+  }
+  input:focus {
+    border: 0.4vw solid blue;
+    transition: all 0.3s;
+    color: blue;
   }
 </style>
