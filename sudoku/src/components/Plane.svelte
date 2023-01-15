@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import Tile from "./Tile.svelte";
-  const rowID = "row";
-  const array = new Array(9).fill(new Array(9).fill(""));
-  const correctArray = new Array(9).fill(new Array(9).fill(false));
+  import * as sudoku from "sudoku";
+  import reshape1Dto2D from "../utils/reshape";
 
+  export let array;
+  export let answers;
+  answers = answers.map((val) => val + 1);
   const onArrow = (e) => {
     const focusShift = e.detail.focusShift;
     const inputs = document.querySelectorAll("input.tile");
@@ -16,20 +18,20 @@
   };
 
   const onAnswer = (e) => {
-    correctArray[e.detail.i][e.detail.o] = e.detail.correct;
+    //winning condition here
   };
 </script>
 
-<div>
-  {#each array as row, i}
+<div class="plane--container">
+  {#each reshape1Dto2D(answers, [9, 9]) as row, i}
     <div class="row">
       {#each row as tile, o}
         <Tile
           position={{ i: i, o: o }}
-          expectedValue={1}
+          expectedValue={tile}
           on:answer={onAnswer}
           on:arrow={onArrow}
-          value={tile}
+          value={array[i][o]}
         />
       {/each}
     </div>
@@ -37,7 +39,14 @@
 </div>
 
 <style>
+  .plane--container {
+    width: 10%;
+  }
   .row:nth-child(3n) {
     margin-bottom: 0.8vw !important;
+  }
+  .row {
+    display: flex;
+    flex-wrap: nowrap;
   }
 </style>

@@ -1,10 +1,17 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   type Position = { i: number; o: number };
 
   export let value;
   export let expectedValue;
   export let position: Position;
+  let disabled = false;
+
+  onMount(() => {
+    if (value == expectedValue) {
+      disabled = true;
+    }
+  });
   const dispatch = createEventDispatcher();
   const handledKeys = {
     ArrowRight: 1,
@@ -15,7 +22,8 @@
 </script>
 
 <input
-  class={"tile " + (value == expectedValue || value == "" ? "" : "error")}
+  {disabled}
+  class={"tile " + (value == expectedValue || value == null ? "" : "error")}
   bind:value
   type="text"
   min="1"
@@ -68,5 +76,9 @@
 
   .tile:nth-child(3n) {
     margin-right: 0.8vw !important;
+  }
+  .tile:disabled {
+    background-color: var(--primary);
+    color: var(--background-color);
   }
 </style>
