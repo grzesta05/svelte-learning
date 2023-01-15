@@ -2,9 +2,16 @@
   import Plane from "./components/Plane.svelte";
 </script>
 
-<main>
+<div class="app-container">
   <Plane />
-</main>
+</div>
 
 <style>
+  .app-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
 </style>

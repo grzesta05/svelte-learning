@@ -21,9 +21,21 @@
   };
 </script>
 
-{#each array as row}
-  {#each row as tile}
-    <Tile expectedValue={1} on:arrow={onArrow} value={tile} />
+<div>
+  {#each array as row}
+    <div class="row">
+      {#each row as tile}
+        <Tile expectedValue={1} on:arrow={onArrow} value={tile} />
+      {/each}
+    </div>
   {/each}
-  <br />
-{/each}
+</div>
+
+<style>
+  .row {
+    margin: 0%;
+  }
+  .row:nth-child(3n) {
+    margin-bottom: 0.8vw !important;
+  }
+</style>

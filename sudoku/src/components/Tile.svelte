@@ -36,7 +36,7 @@
   input {
     background: transparent;
     border: 0.4vw solid var(--primary);
-    margin: 0.5vw !important;
+    margin: 0.5vw;
     width: 5vw;
     height: 5vw;
     max-width: 75px;
@@ -57,5 +57,9 @@
     border: 0.4vw solid var(--error);
     transition: all 0.3s;
     color: var(--error);
+  }
+
+  .tile:nth-child(3n) {
+    margin-right: 0.8vw !important;
   }
 </style>
