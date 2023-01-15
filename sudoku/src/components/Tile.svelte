@@ -1,8 +1,10 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
+  type Position = { i: number; o: number };
 
   export let value;
   export let expectedValue;
+  export let position: Position;
   const dispatch = createEventDispatcher();
   const handledKeys = {
     ArrowRight: 1,
@@ -21,13 +23,18 @@
   maxlength={1}
   on:keydown={(e) => {
     e.preventDefault();
+    //Check if a number
     if (!isNaN(e.key) && e.key != "0") {
       value = e.key;
+      dispatch("answer", { correct: value == expectedValue, ...position });
+      //Check if backspace
     } else if (e.key == "Backspace") {
       value = "";
+      dispatch("answer", { correct: false, ...position });
+      //Check if arrows
     } else if (handledKeys[e.code] != undefined) {
       console.log("Arrows");
-      dispatch("arrow", { focusShift: handledKeys[e.code] });
+      dispatch("arrow", { focusShift: handledKeys[e.code], ...position });
     }
   }}
 />
