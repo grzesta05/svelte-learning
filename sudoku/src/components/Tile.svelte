@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let value;
+  export let expectedValue;
   const dispatch = createEventDispatcher();
   const handledKeys = {
     ArrowRight: 1,
@@ -12,7 +13,7 @@
 </script>
 
 <input
-  class="tile"
+  class={"tile " + (value == expectedValue || value == "" ? "" : "error")}
   bind:value
   type="text"
   min="1"
@@ -34,22 +35,27 @@
 <style>
   input {
     background: transparent;
-    border: 0.4vw solid blueviolet;
+    border: 0.4vw solid var(--primary);
     margin: 0.5vw !important;
     width: 5vw;
     height: 5vw;
     max-width: 75px;
     max-height: 75px;
     border-radius: 5px;
-    color: blueviolet;
+    color: var(--primary);
     font-size: 2rem;
     text-align: center;
     caret-color: transparent;
     transition: all 0.3s;
   }
   input:focus {
-    border: 0.4vw solid blue;
+    border: 0.4vw solid var(--primary-focus);
     transition: all 0.3s;
-    color: blue;
+    color: var(--primary-focus);
+  }
+  input.error {
+    border: 0.4vw solid var(--error);
+    transition: all 0.3s;
+    color: var(--error);
   }
 </style>

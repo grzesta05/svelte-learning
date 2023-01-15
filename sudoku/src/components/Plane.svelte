@@ -23,7 +23,7 @@
 
 {#each array as row}
   {#each row as tile}
-    <Tile on:arrow={onArrow} value={tile} />
+    <Tile expectedValue={1} on:arrow={onArrow} value={tile} />
   {/each}
   <br />
 {/each}
