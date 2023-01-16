@@ -8,12 +8,25 @@
   export let answers;
   answers = answers.map((val) => val + 1);
   const onArrow = (e) => {
-    const focusShift = e.detail.focusShift;
+    let focusShift = e.detail.focusShift;
     const inputs = document.querySelectorAll("input.tile");
     let focusedIndex = e.detail.i * 9 + e.detail.o;
 
     if (focusedIndex + focusShift < 81 && focusedIndex + focusShift >= 0) {
-      inputs.item(focusedIndex + focusShift).focus();
+      if (!inputs.item(focusedIndex + focusShift).disabled) {
+        inputs.item(focusedIndex + focusShift).focus();
+      } else {
+        while (
+          focusedIndex + focusShift < 81 &&
+          focusedIndex + focusShift >= 0
+        ) {
+          focusShift += focusShift > 0 ? 1 : -1;
+          if (!inputs.item(focusedIndex + focusShift).disabled) {
+            inputs.item(focusedIndex + focusShift).focus();
+            return;
+          }
+        }
+      }
     }
   };
 
