@@ -1,12 +1,18 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import Tile from "./Tile.svelte";
   import * as sudoku from "sudoku";
   import reshape1Dto2D from "../utils/reshape";
 
-  export let array;
+  export let writeAsHint: boolean;
+  export let shown;
+  export let input;
   export let answers;
+  export let hints: Array<Array<number>> = Array(81);
+  const dispatch = createEventDispatcher();
+
   answers = answers.map((val) => val + 1);
+
   const onArrow = (e) => {
     let focusShift = e.detail.focusShift;
     const inputs = document.querySelectorAll("input.tile");
@@ -30,7 +36,11 @@
     }
   };
 
-  const onAnswer = (e) => {
+  const onChange = (e) => {
+    input[e.detail.i * 9 + e.detail.o] = e.detail.val;
+    hints[e.detail.i * 9 + e.detail.o] = e.detail.hints;
+
+    dispatch("change", { input: input, hints: hints });
     //winning condition here
   };
 </script>
@@ -42,9 +52,14 @@
         <Tile
           position={{ i: i, o: o }}
           expectedValue={tile}
-          on:answer={onAnswer}
+          on:change={onChange}
           on:arrow={onArrow}
-          value={array[i][o]}
+          input={{
+            isInitial: shown[i][o] != undefined,
+            value: shown[i][o] != undefined ? shown[i][o] : input[i * 9 + o],
+          }}
+          {writeAsHint}
+          hints={hints[i * 9 + o] || []}
         />
       {/each}
     </div>
